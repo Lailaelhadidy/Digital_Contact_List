@@ -68,7 +68,8 @@ public class Digital_Contact_List {
                     if(phonebook.searchRec(phonebook.root, name)!=null){
                         System.out.println("Enter New Phone: ");
                         String phone = in.nextLine(); 
-                        phonebook.updateExistingPhone(name, phone);
+                        Person p= new Person(name, phone);
+                        phonebook.updateExistingPhone2(p);
                     }
                     else
                         System.out.println("Contact not Found");
