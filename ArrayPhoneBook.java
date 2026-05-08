@@ -4,91 +4,140 @@ import java.util.ArrayList;
 
 public class ArrayPhoneBook {
     
-    ArrayList<Person> contacts = new ArrayList<>();
-    
-    public void insert(Person p) {
-        contacts.add(p);
-        System.out.println("Contact Added Successfully...");
+    private ArrayList<Person> contacts;
+
+    public ArrayPhoneBook() {
+        contacts = new ArrayList<>();
     }
-    
-    public void search(String name) {
-        for (Person p : contacts) {
-            if (p.getName().equalsIgnoreCase(name)) {
-                System.out.println("Contact Found: " + p.getName() + "  " + p.getPhone());
+
+    public void insert(Person person) {
+
+        for (int i = 0; i < contacts.size(); i++) {
+            if (contacts.get(i).getName().equalsIgnoreCase(person.getName())) {
+                System.out.println("Contact already exists.");
                 return;
             }
         }
-        System.out.println("Unfortunately, Contact not Found...");
+
+        for (int i = 0; i <= contacts.size(); i++) {
+            if (i == contacts.size()
+                    || person.getName().compareToIgnoreCase(contacts.get(i).getName()) < 0) {
+
+                contacts.add(i, person);
+                System.out.println("Contact inserted successfully.");
+                return;
+            }
+        }
     }
-    
+
+    public Person search(String name) {
+
+        for (Person person : contacts) {
+            if (person.getName().equalsIgnoreCase(name)) {
+                System.out.println("Contact Found: " + person.getName() + "  " + person.getPhone());
+                return person;
+            }
+        }
+
+        System.out.println("Contact not found.");
+        return null;
+    }
+
     public void remove(String name) {
+
         for (int i = 0; i < contacts.size(); i++) {
+
             if (contacts.get(i).getName().equalsIgnoreCase(name)) {
-                
+
                 for (int j = i; j < contacts.size() - 1; j++) {
                     contacts.set(j, contacts.get(j + 1));
                 }
-                
+
                 contacts.remove(contacts.size() - 1);
-                System.out.println("Contact Removed Successfully...");
+                System.out.println("Contact removed successfully.");
                 return;
             }
         }
-        System.out.println("Contact Not Found...");
+
+        System.out.println("Contact not found.");
     }
-    
+
     public void updateExistingPhone(String name, String newPhone) {
-        for (int i = 0; i < contacts.size(); i++) {
-            if (contacts.get(i).getName().equalsIgnoreCase(name)) {
-                contacts.get(i).setPhone(newPhone);
-                System.out.println("Contact Phone Updated Successfully");
+
+        for (Person person : contacts) {
+            if (person.getName().equalsIgnoreCase(name)) {
+                person.setPhone(newPhone);
+                System.out.println("Contact phone updated successfully.");
                 return;
             }
         }
-        System.out.println("Contact Not Found..");
+
+        System.out.println("Contact not found.");
     }
-    
-    public void updateExistingName(String name, String name2) {
-        for (int i = 0; i < contacts.size(); i++) {
-            if (contacts.get(i).getName().equalsIgnoreCase(name)) {
-                contacts.get(i).setName(name2);
-                System.out.println("Contact Name Updated Successfully");
+
+    public void updateExistingName(String oldName, String newName) {
+
+        for (Person person : contacts) {
+            if (person.getName().equalsIgnoreCase(newName)) {
+                System.out.println("New contact name already exists.");
                 return;
             }
         }
-        System.out.println("Contact Not Found..");
+
+        for (int i = 0; i < contacts.size(); i++) {
+            if (contacts.get(i).getName().equalsIgnoreCase(oldName)) {
+
+                String phone = contacts.get(i).getPhone();
+
+                remove(oldName);
+                insert(new Person(newName, phone));
+
+                System.out.println("Contact name updated successfully.");
+                return;
+            }
+        }
+
+        System.out.println("Contact not found.");
     }
-    
+
     public void display() {
-        System.out.println("Contacts: ");
-        
+
+        if (contacts.isEmpty()) {
+            System.out.println("No contacts were found to be displayed.");
+            return;
+        }
+
+        System.out.println("Contacts:");
+
+        for (Person person : contacts) {
+            System.out.println(person.getName() + "  " + person.getPhone());
+        }
+
+        System.out.println("Contacts displayed successfully.");
+    }
+
+    public void size() {
+        System.out.println("Number of Contacts found is " + contacts.size());
+    }
+
+    public void isolate0100() {
+
         if (contacts.isEmpty()) {
             System.out.println("No contacts found.");
             return;
         }
-        
-        for (int i = 0; i < contacts.size(); i++) {
-            System.out.println(contacts.get(i).getName() + "   " + contacts.get(i).getPhone());
-        }
-        
-    }
-    
-    public void size() {
-        System.out.println("Number of Contacts found is " + contacts.size());
-    }
-    
-    public void isolate0100() {
-        System.out.println("Contacts starting with (0100): ");
-        
+
+        System.out.println("Contacts starting with 0100:");
+
         boolean found = false;
-        
-        for (int i = 0; i < contacts.size(); i++) {
-            if (contacts.get(i).getPhone().startsWith("0100")) {
-                System.out.println(contacts.get(i).getName() + "   " + contacts.get(i).getPhone());
+
+        for (Person person : contacts) {
+            if (person.getPhone().startsWith("0100")) {
+                System.out.println(person.getName() + "  " + person.getPhone());
                 found = true;
             }
         }
-        
+
         if (!found) {
             System.out.println("No contacts starting with 0100.");
         }
